@@ -24,5 +24,26 @@ class CourtSeeder extends Seeder
             'type' => 'Premium',
             'price_per_hour' => '100000',
         ]);
+
+
+        Court::create([
+            'name' => 'Court 3',
+            'type' => 'Premium',
+            'price_per_hour' => '100000',
+        ]);
+
+
+        Court::create([
+            'name' => 'Court 4',
+            'type' => 'Standar',
+            'price_per_hour' => '50000',
+        ]);
+
+
+        Court::create([
+            'name' => 'Court 5',
+            'type' => 'Premium',
+            'price_per_hour' => '100000',
+        ]);
     }
 }

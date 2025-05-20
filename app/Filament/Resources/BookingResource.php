@@ -6,6 +6,7 @@ use App\Filament\Resources\BookingResource\Pages;
 use App\Filament\Resources\BookingResource\RelationManagers;
 use App\Models\Booking;
 use Filament\Forms;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -26,7 +27,10 @@ class BookingResource extends Resource
                 Forms\Components\TextInput::make('requester_id')
                     ->required()
                     ->numeric(),
-                Forms\Components\TextInput::make('court_id')
+                Forms\Components\Select::make('court_id')
+                    ->relationship('court', 'name')
+                    ->searchable()
+                    ->preload()
                     ->required()
                     ->numeric(),
                 Forms\Components\TextInput::make('no_pemesanan')
@@ -39,7 +43,12 @@ class BookingResource extends Resource
                     ->required(),
                 Forms\Components\TextInput::make('duration')
                     ->numeric(),
-                Forms\Components\TextInput::make('approval_status')
+                Forms\Components\Select::make('approval_status')
+                    ->options([
+                        'checked_in' => 'Checked In',
+                        'pending' => 'Pending',
+                        'cancelled' => 'Cancelled',
+                    ])
                     ->required(),
                 Forms\Components\TextInput::make('payment_id')
                     ->numeric(),

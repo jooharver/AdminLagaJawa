@@ -23,12 +23,22 @@ class PaymentResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('payment_method')
+                Forms\Components\Select::make('payment_method')
+                    ->options([
+                        'qris' => 'QRIS',
+                        'transfer' => 'Transfer',
+                        'cod' => 'COD',
+                    ])
                     ->required(),
                 Forms\Components\TextInput::make('amount')
                     ->required()
                     ->numeric(),
-                Forms\Components\TextInput::make('payment_status')
+                Forms\Components\Select::make('payment_status')
+                    ->options([
+                        'paid' => 'Paid',
+                        'waiting' => 'Waiting',
+                        'failed' => 'Failed',
+                    ])
                     ->required(),
             ]);
     }
