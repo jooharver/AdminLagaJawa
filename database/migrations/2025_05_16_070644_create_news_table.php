@@ -19,6 +19,7 @@ return new class extends Migration
             $table->date('tanggal');
             $table->string('image')->nullable();
             $table->text('deskripsi');
+            $table->enum('kategori', ['announcement', 'event'])->default('announcement');
             $table->timestamps();
         });
     }

@@ -109,6 +109,19 @@ class BookingResource extends Resource
             ->filters([
                 //
             ])
+            ->headerActions([
+                Tables\Actions\Action::make('Export Excel')
+                ->label('Export Excel')
+                ->url(route('export-booking'))
+                ->icon('heroicon-o-arrow-up-tray')
+                ->openUrlInNewTab(),
+
+                Tables\Actions\Action::make('Export PDF')
+                    ->label('Export PDF')
+                    ->url(route('export-bookinglog')) // Perbaiki nama route di sini
+                    ->icon('heroicon-o-arrow-up-tray')
+                    ->openUrlInNewTab(),
+            ])
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),

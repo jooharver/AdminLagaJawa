@@ -23,7 +23,7 @@ class PaymentResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('method')
+                Forms\Components\TextInput::make('payment_method')
                     ->required(),
                 Forms\Components\TextInput::make('amount')
                     ->required()
@@ -37,11 +37,32 @@ class PaymentResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('method'),
+                Tables\Columns\TextColumn::make('id_payment')
+                    ->label('ID'),
+                Tables\Columns\TextColumn::make('booking.no_pemesanan')
+                    ->label('No. Pemesanan'),
+                Tables\Columns\TextColumn::make('booking.booking_date')
+                    ->label('Tanggal')
+                    ->date('d-m-Y')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('booking.requester.name'),
+                Tables\Columns\BadgeColumn::make('payment_method')
+                    ->label('Status')
+                    ->colors([
+                        'success' => 'qris',
+                        'warning' => 'transfer',
+                        'danger' => 'cod',
+                    ]),
                 Tables\Columns\TextColumn::make('amount')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('payment_status'),
+                Tables\Columns\BadgeColumn::make('payment_status')
+                    ->label('Status')
+                    ->colors([
+                        'success' => 'paid',
+                        'warning' => 'waiting',
+                        'danger' => 'failed',
+                    ]),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -56,6 +77,7 @@ class PaymentResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

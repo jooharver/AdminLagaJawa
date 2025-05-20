@@ -16,4 +16,11 @@ class ListBookings extends ListRecords
             Actions\CreateAction::make(),
         ];
     }
+
+    // protected function getHeaderWidgets(): array
+    // {
+    //     return [
+    //         BookingResource\Widgets\BookingOverview::class,
+    //     ];
+    // }
 }
