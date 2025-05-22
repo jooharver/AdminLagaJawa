@@ -2,16 +2,17 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\NewsResource\Pages;
-use App\Filament\Resources\NewsResource\RelationManagers;
-use App\Models\News;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
+use App\Models\News;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Filament\Tables\Columns\ImageColumn;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\NewsResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\NewsResource\RelationManagers;
 
 class NewsResource extends Resource
 {
@@ -35,7 +36,10 @@ class NewsResource extends Resource
                 Forms\Components\DatePicker::make('tanggal')
                     ->required(),
                 Forms\Components\FileUpload::make('image')
-                    ->image(),
+                    ->image()
+                    ->directory('news')  // Tetap tentukan folder tujuan file di public
+                    ->visibility('public')
+                    ->nullable(),
                 Forms\Components\Textarea::make('deskripsi')
                     ->required()
                     ->columnSpanFull(),
@@ -55,7 +59,11 @@ class NewsResource extends Resource
                 Tables\Columns\TextColumn::make('tanggal')
                     ->date()
                     ->sortable(),
-                Tables\Columns\ImageColumn::make('image'),
+                ImageColumn::make('image')
+                    ->label('Image')
+                    ->getStateUsing(fn ($record) => url('/storage/news/' . $record->image))
+                    ->height(60)
+                    ->width(60),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

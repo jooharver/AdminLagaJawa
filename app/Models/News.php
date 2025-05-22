@@ -25,4 +25,5 @@ class News extends Model
             get: fn ($image) => url('/storage/news/' . $image),
         );
     }
+
 }
