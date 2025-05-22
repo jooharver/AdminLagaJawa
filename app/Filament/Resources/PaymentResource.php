@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Tables\Columns\SelectColumn;
 
 class PaymentResource extends Resource
 {
@@ -23,21 +24,18 @@ class PaymentResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\Select::make('payment_status')
+                ->options([
+                    'paid' => 'Paid',
+                    'waiting' => 'Waiting',
+                    'failed' => 'Failed',
+                ])
+                ->required(),
                 Forms\Components\Select::make('payment_method')
                     ->options([
                         'qris' => 'QRIS',
                         'transfer' => 'Transfer',
                         'cod' => 'COD',
-                    ])
-                    ->required(),
-                Forms\Components\TextInput::make('amount')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\Select::make('payment_status')
-                    ->options([
-                        'paid' => 'Paid',
-                        'waiting' => 'Waiting',
-                        'failed' => 'Failed',
                     ])
                     ->required(),
             ]);
@@ -57,7 +55,7 @@ class PaymentResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('booking.requester.name'),
                 Tables\Columns\BadgeColumn::make('payment_method')
-                    ->label('Status')
+                    ->label('Method')
                     ->colors([
                         'success' => 'qris',
                         'warning' => 'transfer',
@@ -66,13 +64,16 @@ class PaymentResource extends Resource
                 Tables\Columns\TextColumn::make('amount')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\BadgeColumn::make('payment_status')
+                SelectColumn::make('payment_status')
                     ->label('Status')
-                    ->colors([
-                        'success' => 'paid',
-                        'warning' => 'waiting',
-                        'danger' => 'failed',
-                    ]),
+                    ->placeholder('Pilih Status:')
+                    ->options([
+                        'waiting' => 'Waiting',
+                        'paid' => 'Paid',
+                        'failed' => 'Failed',
+                    ])
+                    ->sortable()
+                    ->default('pending'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -87,7 +88,6 @@ class PaymentResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
