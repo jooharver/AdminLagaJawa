@@ -10,8 +10,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('komunitas', function (Blueprint $table) {
-            $table->id('id_komunitas');
-            $table->string('name');
+            $table->id('id');
+            $table->string('title');
             $table->string('image')->nullable();
             $table->string('image_logo')->nullable();
             $table->string('image_banner')->nullable();

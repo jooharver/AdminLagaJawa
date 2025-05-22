@@ -14,7 +14,7 @@ class KomunitasSeeder extends Seeder
     public function run(): void
     {
         Komunitas::create([
-            'name' => 'Laga Jawa Tim A',
+            'title' => 'Laga Jawa Tim A',
             'deskripsi' => 'Komunitas ini adalah komunitas yang dibentuk untuk menampung para pemain yang ingin bermain di tim Jawa Tim A',
             'phone' => '081234567890',
             'tanggal' => '2025-05-20',
@@ -27,7 +27,7 @@ class KomunitasSeeder extends Seeder
         ]);
 
         Komunitas::create([
-            'name' => 'Laga Jawa Tim B',
+            'title' => 'Laga Jawa Tim B',
             'deskripsi' => 'Komunitas ini adalah komunitas yang dibentuk untuk menampung para pemain yang ingin bermain di tim Jawa Tim B',
             'phone' => '081234567890',
             'tanggal' => '2025-05-24',

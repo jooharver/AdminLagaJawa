@@ -25,7 +25,7 @@ class KomunitasResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
+                Forms\Components\TextInput::make('title')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('phone')
@@ -72,7 +72,6 @@ class KomunitasResource extends Resource
                 Forms\Components\FileUpload::make('image')
                     ->image()
                     ->maxSize(1024) // maks 1MB
-                    ->directory('komunitas/image')
                     ->getUploadedFileNameForStorageUsing(function ($file) {
                         return md5($file->getClientOriginalName() . microtime()) . '.' . $file->getClientOriginalExtension();
                     })
@@ -102,9 +101,9 @@ class KomunitasResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id_komunitas')
+                Tables\Columns\TextColumn::make('id')
                     ->label('ID'),
-                Tables\Columns\TextColumn::make('name')
+                Tables\Columns\TextColumn::make('title')
                     ->label('Nama Komunitas')
                     ->searchable()
                     ->sortable(),

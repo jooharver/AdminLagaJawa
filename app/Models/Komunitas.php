@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Komunitas extends Model
 {
-    protected $primaryKey = 'id_komunitas';
+    protected $primaryKey = 'id';
 
     protected $fillable = [
-        'name',
+        'title',
         'image',
         'image_logo',
         'image_banner',
