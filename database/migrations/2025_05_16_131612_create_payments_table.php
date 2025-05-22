@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id('id_payment');
-            $table->enum('payment_method', ['qris', 'transfer', 'cod'])->default('transfer');
+            $table->enum('payment_method', ['qris', 'transfer', 'cod'])->nullable()->default('transfer');
             $table->bigInteger('amount');
             $table->enum('payment_status', ['waiting', 'paid', 'failed'])->default('waiting');
             $table->timestamp('paid_at')->nullable();

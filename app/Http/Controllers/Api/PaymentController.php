@@ -102,27 +102,28 @@ class PaymentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //define validation rules
+        // Validate hanya payment_method yang wajib dan nilai harus valid
         $validator = Validator::make($request->all(), [
-            'payment_method'     => 'required',
-            'amount'     => 'required',
-            'payment_status'   => 'required',
+            'payment_method' => 'required|in:transfer,qris,cod',
+            // 'amount' dan 'payment_status' diabaikan / tidak wajib
         ]);
-        //check if validation fails
+
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
 
-        //find payment by ID
         $payment = Payment::find($id);
-            //update payment without image
-            $payment->update([
-                'payment_method'     => $request->payment_method,
-                'amount'   => $request->amount,
-                'payment_status' => $request->payment_status
-            ]);
+        if (!$payment) {
+            return response()->json(['message' => 'Payment not found'], 404);
+        }
 
-        //return response
+        // Update hanya payment_method
+        $payment->update([
+            'payment_method' => $request->payment_method,
+            // Kalau mau update amount/status juga, bisa ditambahkan di sini,
+            // tapi sesuai skenario sekarang, kita hanya update payment_method
+        ]);
+
         return new PaymentApiResource(true, 'Data Payment Berhasil Diubah!', $payment);
     }
 

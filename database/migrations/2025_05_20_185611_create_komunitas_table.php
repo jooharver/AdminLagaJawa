@@ -14,10 +14,11 @@ return new class extends Migration
             $table->string('name');
             $table->string('image')->nullable();
             $table->string('image_logo')->nullable();
+            $table->string('image_banner')->nullable();
             $table->string('phone');
             $table->string('deskripsi');
-            $table->date('booking_date')->nullable();
-            $table->json('time_slots')->nullable();
+            $table->date('tanggal')->nullable();
+            $table->json('jadwal')->nullable();
             $table->string('court')->nullable();
             $table->timestamps();
         });

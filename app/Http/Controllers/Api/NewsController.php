@@ -17,7 +17,7 @@ class NewsController extends Controller
         $posts = News::latest()->paginate(5);
 
         //return collection of posts as a resource
-        return new NewsApiResource(true, 'List Data News Coyyy', $posts);
+        return new NewsApiResource(true, 'List Data News', $posts);
     }
 
     public function show($id)
@@ -30,7 +30,7 @@ class NewsController extends Controller
         //     'deskripsi' => $post->deskripsi,
         // ];
 
-        return new NewsApiResource(true, 'Detail Data NEWS COYYY!', $post);
+        return new NewsApiResource(true, 'Detail Data News', $post);
     }
 
     public function store(Request $request)

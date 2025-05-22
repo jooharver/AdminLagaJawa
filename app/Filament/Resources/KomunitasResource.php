@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\KomunitasResource\Pages;
 use App\Filament\Resources\KomunitasResource\RelationManagers;
 use App\Models\Komunitas;
+
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -30,30 +31,69 @@ class KomunitasResource extends Resource
                 Forms\Components\TextInput::make('phone')
                     ->required()
                     ->maxLength(20),
-                Forms\Components\DatePicker::make('booking_date')
+                Forms\Components\DatePicker::make('tanggal')
+                    ->nullable(),
+                Forms\Components\Select::make('jadwal')
+                ->nullable()
+                ->multiple()
+                ->options([
+                    '06:00:00' => '06:00',
+                    '07:00:00' => '07:00',
+                    '08:00:00' => '08:00',
+                    '09:00:00' => '09:00',
+                    '10:00:00' => '10:00',
+                    '11:00:00' => '11:00',
+                    '12:00:00' => '12:00',
+                    '13:00:00' => '13:00',
+                    '14:00:00' => '14:00',
+                    '15:00:00' => '15:00',
+                    '16:00:00' => '16:00',
+                    '17:00:00' => '17:00',
+                    '18:00:00' => '18:00',
+                    '19:00:00' => '19:00',
+                    '20:00:00' => '20:00',
+                    '21:00:00' => '21:00',
+                    '22:00:00' => '22:00',
+                    '23:00:00' => '23:00',
+                ]),
+                Forms\Components\Select::make('court')
+
+                    ->options([
+                        'Court 1' => 'Court 1',
+                        'Court 2' => 'Court 2',
+                        'Court 3' => 'Court 3',
+                        'Court 4' => 'Court 4',
+                        'Court 5' => 'Court 5',
+                    ])
                     ->required(),
-                Forms\Components\TextInput::make('time_slots')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('court')
-                    ->required()
-                    ->maxLength(255),
                 Forms\Components\Textarea::make('deskripsi')
                     ->required()
                     ->columnSpanFull(),
                 Forms\Components\FileUpload::make('image')
                     ->image()
-                    ->required()
-                    ->directory('community')
-                    ->preserveFilenames()
-                    ->maxSize(1024)
-                    ->columnSpanFull(),
+                    ->maxSize(1024) // maks 1MB
+                    ->directory('komunitas/image')
+                    ->getUploadedFileNameForStorageUsing(function ($file) {
+                        return md5($file->getClientOriginalName() . microtime()) . '.' . $file->getClientOriginalExtension();
+                    })
+
+                    ,
                 Forms\Components\FileUpload::make('image_logo')
                     ->image()
-                    ->required()
-                    ->directory('community')
-                    ->preserveFilenames()
-                    ->maxSize(1024)
+                    ->maxSize(1024) // maks 1MB
+                    ->getUploadedFileNameForStorageUsing(function ($file) {
+                        return md5($file->getClientOriginalName() . microtime()) . '.' . $file->getClientOriginalExtension();
+                    })
+
+                    ,
+                Forms\Components\FileUpload::make('image_banner')
+                    ->image()
+                    ->maxSize(1024) // maks 1MB
+                    ->getUploadedFileNameForStorageUsing(function ($file) {
+                        return md5($file->getClientOriginalName() . microtime()) . '.' . $file->getClientOriginalExtension();
+                    })
+
+
                     ->columnSpanFull(),
             ]);
     }
@@ -72,12 +112,12 @@ class KomunitasResource extends Resource
                     ->label('No. Telepon')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('booking_date')
-                    ->label('Jadwal')
+                Tables\Columns\TextColumn::make('tanggal')
+                    ->label('Tanggal')
                     ->date('d-m-Y')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('time_slots')
-                    ->label('Waktu Booking')
+                Tables\Columns\TextColumn::make('jadwal')
+                    ->label('Waktu')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('court')
                     ->label('Court')

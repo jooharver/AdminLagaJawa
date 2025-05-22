@@ -39,12 +39,12 @@ class BookingController extends Controller
         $request->validate([
             'requester_id' => 'required|integer|exists:users,id',
             'court_id' => 'required|integer|exists:courts,id_court',
-            'payment_id' => 'required|integer|exists:payments,id_payment',
             'booking_date' => 'required|date',
             'time_slots' => 'required|array',
             'time_slots.*' => 'date_format:H:i:s',
             'notes' => 'nullable|string',
         ]);
+
 
         // Ambil semua booking untuk court & tanggal yang sama
         $existingBookings = Booking::where('court_id', $request->court_id)
@@ -69,7 +69,6 @@ class BookingController extends Controller
         $booking = Booking::create([
             'requester_id' => $request->requester_id,
             'court_id' => $request->court_id,
-            'payment_id' => $request->payment_id,
             'booking_date' => $request->booking_date,
             'time_slots' => $request->time_slots,
             'notes' => $request->notes,

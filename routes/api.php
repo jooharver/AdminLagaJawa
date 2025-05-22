@@ -19,3 +19,5 @@ Route::apiResource('/bookings', App\Http\Controllers\Api\BookingController::clas
 Route::apiResource('/payments', App\Http\Controllers\Api\PaymentController::class);
 //transaction
 Route::apiResource('/transactions', App\Http\Controllers\Api\TransactionController::class);
+//komunitas
+Route::apiResource('/komunitas', App\Http\Controllers\Api\KomunitasController::class);

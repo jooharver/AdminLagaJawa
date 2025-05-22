@@ -13,17 +13,37 @@ class Komunitas extends Model
         'name',
         'image',
         'image_logo',
+        'image_banner',
         'phone',
         'deskripsi',
-        'booking_date',
-        'time_slots',
+        'tanggal',
+        'jadwal',
         'court',
+    ];
+
+    protected $casts = [
+        'jadwal' => 'array',
     ];
 
     protected function image(): Attribute
     {
         return Attribute::make(
-            get: fn ($image) => url('/storage/community/' . $image),
+            get: fn ($image) => url('/storage/komunitas/image' . $image),
         );
     }
+
+    protected function imageLogo(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($image_logo) => url('/storage/komunitas/image_logo' . $image_logo),
+        );
+    }
+
+    protected function imageBanner(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($image_banner) => url('/storage/komunitas/image_banner' . $image_banner),
+        );
+    }
+
 }
