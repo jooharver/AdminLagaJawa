@@ -13,6 +13,8 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Tables\Columns\ToggleColumn;
+use Filament\Tables\Columns\SelectColumn;
 
 class BookingResource extends Resource
 {
@@ -31,27 +33,44 @@ class BookingResource extends Resource
                     ->relationship('court', 'name')
                     ->searchable()
                     ->preload()
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('no_pemesanan')
-                    ->maxLength(255),
+                    ->required(),
                 Forms\Components\DatePicker::make('booking_date')
                     ->required(),
-                Forms\Components\TextInput::make('start_time')
-                    ->required(),
-                Forms\Components\TextInput::make('end_time')
-                    ->required(),
+                Forms\Components\Select::make('time_slots')
+                    ->multiple()
+                    ->options([
+                        '06:00:00' => '06:00',
+                        '07:00:00' => '07:00',
+                        '08:00:00' => '08:00',
+                        '09:00:00' => '09:00',
+                        '10:00:00' => '10:00',
+                        '11:00:00' => '11:00',
+                        '12:00:00' => '12:00',
+                        '13:00:00' => '13:00',
+                        '14:00:00' => '14:00',
+                        '15:00:00' => '15:00',
+                        '16:00:00' => '16:00',
+                        '17:00:00' => '17:00',
+                        '18:00:00' => '18:00',
+                        '19:00:00' => '19:00',
+                        '20:00:00' => '20:00',
+                        '21:00:00' => '21:00',
+                        '22:00:00' => '22:00',
+                        '23:00:00' => '23:00',
+                    ]),
                 Forms\Components\TextInput::make('duration')
-                    ->numeric(),
+                    ->numeric()
+                    ->hidden(),
                 Forms\Components\Select::make('approval_status')
                     ->options([
                         'checked_in' => 'Checked In',
                         'pending' => 'Pending',
                         'cancelled' => 'Cancelled',
                     ])
-                    ->required(),
+                    ->default('pending'),
                 Forms\Components\TextInput::make('payment_id')
-                    ->numeric(),
+                    ->numeric()
+                    ->hidden(),
                 Forms\Components\Textarea::make('notes')
                     ->columnSpanFull(),
             ]);
@@ -85,19 +104,26 @@ class BookingResource extends Resource
             ->time('H:i'),
             Tables\Columns\TextColumn::make('end_time')
             ->time('H:i'),
-            // Tables\Columns\TextColumn::make('approver')
-            // ->label('Approver')
-            // ->sortable()
-            // ->getStateUsing(function ($record) {
-            //     return \App\Models\User::find($record->approver)->name ?? 'N/A'; // Get the name of the requester
-            // }),
-            Tables\Columns\BadgeColumn::make('approval_status')
+            Tables\Columns\TextColumn::make('duration')
+            ->label('Durasi')
+            ->formatStateUsing(fn ($state) => $state . ' Jam'),
+            Tables\Columns\TextColumn::make('time_slots')
+            ->label('Slot Waktu')
+            ->formatStateUsing(fn ($state) => is_array($state) ? implode(', ', $state) : $state)
+            ,
+            Tables\Columns\TextColumn::make('payment_id')
+            ->label('Payment ID')
+            ->sortable(),
+            SelectColumn::make('approval_status')
             ->label('Status')
-            ->colors([
-                'success' => 'checked_in',
-                'warning' => 'pending',
-                'danger' => 'cancelled'
-            ]),
+            ->placeholder('Pilih Status:')
+            ->options([
+                'pending' => 'Pending',
+                'checked_in' => 'Check In',
+                'cancelled' => 'Cancelled',
+            ])
+            ->sortable()
+            ->default('pending'),
 
             Tables\Columns\BadgeColumn::make('payment.payment_status')
             ->label('Payment Status')
