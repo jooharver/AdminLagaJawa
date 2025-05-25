@@ -21,3 +21,5 @@ Route::apiResource('/transactions', App\Http\Controllers\Api\TransactionControll
 Route::apiResource('/komunitas', App\Http\Controllers\Api\KomunitasController::class);
 //test
 Route::apiResource('/test', App\Http\Controllers\Api\TestController::class);
+//court
+Route::apiResource('/courts', App\Http\Controllers\Api\CourtController::class);
