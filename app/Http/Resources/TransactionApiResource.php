@@ -25,6 +25,7 @@ class TransactionApiResource extends JsonResource
         parent::__construct($resource);
         $this->status  = $status;
         $this->message = $message;
+        $this->resource = $resource;
     }
 
     /**

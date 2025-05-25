@@ -2,79 +2,71 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Booking;
-use App\Models\Payment;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TransactionApiResource;
+use App\Models\Transaction;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class TransactionController extends Controller
 {
+    public function index()
+    {
+        // Get all transactions
+        $transactions = Transaction::latest()->paginate(5);
+
+        // Return collection of transactions as a resource
+        return new TransactionApiResource(true, 'List Data Transactions', $transactions);
+    }
+
+    public function show($id)
+    {
+        // Find transaction by ID
+        $transaction = Transaction::find($id);
+
+        // Check if transaction exists
+        if ($transaction) {
+            return new TransactionApiResource(true, 'Transaction Found', $transaction);
+        } else {
+            return new TransactionApiResource(false, 'Transaction Not Found', null);
+        }
+    }
+
     public function store(Request $request)
     {
-        // Validasi input
         $validator = Validator::make($request->all(), [
-            'requester_id'  => 'required|integer|exists:users,id',
-            'court_id'      => 'required|integer|exists:courts,id_court',
-            'booking_date'  => 'required|date',
-            'time_slots'    => 'required|array|min:1',
-            'payment_method'=> 'required|string',
-            'notes'         => 'nullable|string',
+            'user_id' => 'required|exists:users,id',
+            'payment_method' => 'required|string',
+            // Tambahkan validasi lain jika perlu
         ]);
 
         if ($validator->fails()) {
-            return new TransactionApiResource(false, 'Validasi gagal', $validator->errors());
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors()->first(),
+                'data' => null
+            ], 422);
         }
 
-        // Mulai transaction DB
-        DB::beginTransaction();
+            // Generate no_pemesanan unik
+        do {
+            $randomCode = 'NTR-' . strtoupper(substr(bin2hex(random_bytes(5)), 0, 9));
+            $exists = Transaction::where('no_pemesanan', $randomCode)->exists();
+        } while ($exists);
 
-        try {
-            // Hitung durasi (jumlah slot)
-            $duration = count($request->time_slots);
 
-            // Hitung total pembayaran
-            $totalAmount = $duration * 100000;
+        // Buat transaksi baru, total_amount default 0, payment_status default 'waiting', status default 'pending'
+        $transaction = Transaction::create([
+            'user_id' => $request->user_id,
+            'payment_method' => $request->payment_method,
+            'total_amount' => 0,
+            'payment_status' => 'waiting',
+            'status' => 'pending',
+            'no_pemesanan' => $randomCode,
+        ]);
 
-            // Buat data payment dulu
-            $payment = Payment::create([
-                'payment_method' => $request->payment_method,
-                'payment_status' => 'waiting',
-                'amount' => $totalAmount,
-            ]);
-
-            // Cek bentrok booking
-            $exists = Booking::where('court_id', $request->court_id)
-                ->where('booking_date', $request->booking_date)
-                ->whereJsonContains('time_slots', $request->time_slots)
-                ->exists();
-
-            if ($exists) {
-                DB::rollBack();
-                return new TransactionApiResource(false, 'Slot waktu sudah dipesan, silakan pilih slot lain.', null);
-            }
-
-            // Simpan booking
-            $booking = Booking::create([
-                'requester_id' => $request->requester_id,
-                'court_id' => $request->court_id,
-                'payment_id' => $payment->id_payment,
-                'booking_date' => $request->booking_date,
-                'time_slots' => $request->time_slots,
-                'notes' => $request->notes,
-            ]);
-
-            DB::commit();
-
-            return new TransactionApiResource(true, 'Booking dan pembayaran berhasil.', [
-                'payment' => $payment,
-                'booking' => $booking,
-            ]);
-        } catch (\Exception $e) {
-            DB::rollBack();
-
-            return new TransactionApiResource(false, 'Terjadi kesalahan: ' . $e->getMessage(), null);
-        }
+        return new TransactionApiResource(true, 'Transaction created successfully', $transaction);
     }
+
 }

@@ -15,8 +15,6 @@ Route::apiResource('/posts', App\Http\Controllers\Api\PostController::class);
 Route::apiResource('/news', App\Http\Controllers\Api\NewsController::class);
 //booking
 Route::apiResource('/bookings', App\Http\Controllers\Api\BookingController::class);
-//payment
-Route::apiResource('/payments', App\Http\Controllers\Api\PaymentController::class);
 //transaction
 Route::apiResource('/transactions', App\Http\Controllers\Api\TransactionController::class);
 //komunitas
