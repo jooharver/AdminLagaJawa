@@ -17,7 +17,11 @@ class TestResource extends Resource
 {
     protected static ?string $model = Test::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-face-smile';
+
+    protected static ?string $navigationLabel = 'Halaman Testing';
+
+    protected static ?string $pluralLabel = 'Testing';
 
     public static function form(Form $form): Form
     {

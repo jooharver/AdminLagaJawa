@@ -19,8 +19,13 @@ use Filament\Tables\Columns\SelectColumn;
 class BookingResource extends Resource
 {
     protected static ?string $model = Booking::class;
+    protected static ?string $navigationIcon = 'heroicon-o-calendar-date-range';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationLabel = 'Booking';
+
+    protected static ?string $pluralLabel = 'Booking';
+    protected static ?int $navigationSort = 2;
+    protected static ?string $navigationGroup = 'Administrasi';
 
     public static function form(Form $form): Form
     {

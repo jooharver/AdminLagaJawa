@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CourtResource\Pages;
-use App\Filament\Resources\CourtResource\RelationManagers;
-use App\Models\Court;
+use App\Filament\Resources\UserResource\Pages;
+use App\Filament\Resources\UserResource\RelationManagers;
+use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,17 +13,17 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class CourtResource extends Resource
+class UserResource extends Resource
 {
-    protected static ?string $model = Court::class;
+    protected static ?string $model = User::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-map';
+    protected static ?string $navigationIcon = 'heroicon-o-user-plus';
 
-    protected static ?string $navigationLabel = 'Court';
+    protected static ?string $navigationLabel = 'User';
 
-    protected static ?string $pluralLabel = 'Court';
-    protected static ?int $navigationSort = 3;
-    protected static ?string $navigationGroup = 'Administrasi';
+    protected static ?string $pluralLabel = 'User';
+    protected static ?int $navigationSort = 7;
+    protected static ?string $navigationGroup = 'Setting';
 
     public static function form(Form $form): Form
     {
@@ -32,10 +32,21 @@ class CourtResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('type')
+                Forms\Components\TextInput::make('phone')
+                    ->tel()
+                    ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('price_per_hour')
-                    ->numeric(),
+                Forms\Components\Textarea::make('address')
+                    ->columnSpanFull(),
+                Forms\Components\TextInput::make('email')
+                    ->email()
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\DateTimePicker::make('email_verified_at'),
+                Forms\Components\TextInput::make('password')
+                    ->password()
+                    ->required()
+                    ->maxLength(255),
             ]);
     }
 
@@ -43,14 +54,14 @@ class CourtResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id_court')
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('type')
+                Tables\Columns\TextColumn::make('phone')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('price_per_hour')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('email')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('email_verified_at')
+                    ->dateTime()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -84,9 +95,9 @@ class CourtResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCourts::route('/'),
-            'create' => Pages\CreateCourt::route('/create'),
-            'edit' => Pages\EditCourt::route('/{record}/edit'),
+            'index' => Pages\ListUsers::route('/'),
+            'create' => Pages\CreateUser::route('/create'),
+            'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
     }
 }
