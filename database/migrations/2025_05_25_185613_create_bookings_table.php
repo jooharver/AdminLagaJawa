@@ -13,17 +13,14 @@ return new class extends Migration
     {
         Schema::create('bookings', function (Blueprint $table) {
             $table->id('id_booking');
-            $table->foreignId('requester_id')->constrained('users', 'id')->onDelete('cascade');
-            $table->foreignId('court_id')->constrained('courts', 'id_court')->onDelete('cascade')->nullable();
-            $table->string('no_pemesanan')->nullable();
+            $table->foreignId('transaction_id')->constrained('transactions', 'id_transaction')->onDelete('cascade');
+            $table->foreignId('court_id')->constrained('courts', 'id_court')->onDelete('cascade');
             $table->date('booking_date');
             $table->json('time_slots');
-            $table->time('start_time');
-            $table->time('end_time');
             $table->integer('duration')->nullable();
-            $table->enum('approval_status', ['pending', 'checked_in', 'cancelled'])->default('pending');
-            $table->foreignId('payment_id')->nullable()->constrained('payments', 'id_payment')->onDelete('cascade');
+            $table->bigInteger('amount');
             $table->text('notes')->nullable();
+
             $table->timestamps();
         });
     }

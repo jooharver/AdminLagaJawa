@@ -70,13 +70,8 @@ class KomunitasResource extends Resource
                     ->required()
                     ->columnSpanFull(),
                 Forms\Components\FileUpload::make('image')
-                    ->image()
-                    ->maxSize(1024) // maks 1MB
-                    ->getUploadedFileNameForStorageUsing(function ($file) {
-                        return md5($file->getClientOriginalName() . microtime()) . '.' . $file->getClientOriginalExtension();
-                    })
-
-                    ,
+                    ->directory('komunitas')
+                    ->required(),
                 Forms\Components\FileUpload::make('image_logo')
                     ->image()
                     ->maxSize(1024) // maks 1MB

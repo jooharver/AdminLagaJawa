@@ -28,21 +28,21 @@ class Komunitas extends Model
     protected function image(): Attribute
     {
         return Attribute::make(
-            get: fn ($image) => url('/storage/komunitas/image' . $image),
+            get: fn ($image) => url('/storage/komunitas/' . $image),
         );
     }
 
     protected function imageLogo(): Attribute
     {
         return Attribute::make(
-            get: fn ($image_logo) => url('/storage/komunitas/image_logo' . $image_logo),
+            get: fn ($image_logo) => url('/storage/komunitas/' . $image_logo),
         );
     }
 
     protected function imageBanner(): Attribute
     {
         return Attribute::make(
-            get: fn ($image_banner) => url('/storage/komunitas/image_banner' . $image_banner),
+            get: fn ($image_banner) => url('/storage/komunitas/' . $image_banner),
         );
     }
 

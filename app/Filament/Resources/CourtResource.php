@@ -2,21 +2,20 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\CourtResource\Pages;
+use App\Filament\Resources\CourtResource\RelationManagers;
+use App\Models\Court;
 use Filament\Forms;
-use App\Models\News;
-use Filament\Tables;
 use Filament\Forms\Form;
-use Filament\Tables\Table;
 use Filament\Resources\Resource;
-use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables;
+use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Resources\NewsResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\NewsResource\RelationManagers;
 
-class NewsResource extends Resource
+class CourtResource extends Resource
 {
-    protected static ?string $model = News::class;
+    protected static ?string $model = Court::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -24,23 +23,13 @@ class NewsResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('judul')
+                Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('sub_judul')
-                    ->required()
+                Forms\Components\TextInput::make('type')
                     ->maxLength(255),
-                Forms\Components\TextInput::make('tempat')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\DatePicker::make('tanggal')
-                    ->required(),
-                Forms\Components\FileUpload::make('image')
-                    ->directory('news')
-                    ->required(),
-                Forms\Components\Textarea::make('deskripsi')
-                    ->required()
-                    ->columnSpanFull(),
+                Forms\Components\TextInput::make('price_per_hour')
+                    ->numeric(),
             ]);
     }
 
@@ -48,20 +37,13 @@ class NewsResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('judul')
+                Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('sub_judul')
+                Tables\Columns\TextColumn::make('type')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('tempat')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('tanggal')
-                    ->date()
+                Tables\Columns\TextColumn::make('price_per_hour')
+                    ->numeric()
                     ->sortable(),
-                ImageColumn::make('image')
-                    ->label('Image')
-                    ->getStateUsing(fn ($record) => url('/storage/news/' . $record->image))
-                    ->height(60)
-                    ->width(60),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -94,9 +76,9 @@ class NewsResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListNews::route('/'),
-            'create' => Pages\CreateNews::route('/create'),
-            'edit' => Pages\EditNews::route('/{record}/edit'),
+            'index' => Pages\ListCourts::route('/'),
+            'create' => Pages\CreateCourt::route('/create'),
+            'edit' => Pages\EditCourt::route('/{record}/edit'),
         ];
     }
 }

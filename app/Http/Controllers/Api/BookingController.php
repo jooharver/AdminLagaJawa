@@ -34,6 +34,7 @@ class BookingController extends Controller
 
         return new BookingApiResource(true, 'Detail Data Booking', $booking);
     }
+    
     public function store(Request $request)
     {
         $request->validate([

@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\PaymentResource\Pages;
+namespace App\Filament\Resources\TransactionResource\Pages;
 
-use App\Filament\Resources\PaymentResource;
+use App\Filament\Resources\TransactionResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditPayment extends EditRecord
+class EditTransaction extends EditRecord
 {
-    protected static string $resource = PaymentResource::class;
+    protected static string $resource = TransactionResource::class;
 
     protected function getHeaderActions(): array
     {
@@ -16,6 +16,9 @@ class EditPayment extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
+
+
+
     protected function getRedirectUrl(): string
     {
         return $this->getResource()::getUrl('index');

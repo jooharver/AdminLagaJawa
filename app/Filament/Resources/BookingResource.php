@@ -26,9 +26,12 @@ class BookingResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('requester_id')
-                    ->required()
-                    ->numeric(),
+                Forms\Components\Select::make('transaction_id')
+                    ->relationship('transaction', 'no_pemesanan')
+                    ->label('Order ID')
+                    ->searchable()
+                    ->preload()
+                    ->required(),
                 Forms\Components\Select::make('court_id')
                     ->relationship('court', 'name')
                     ->searchable()
@@ -37,6 +40,7 @@ class BookingResource extends Resource
                 Forms\Components\DatePicker::make('booking_date')
                     ->required(),
                 Forms\Components\Select::make('time_slots')
+                    ->label('Slot Waktu')
                     ->multiple()
                     ->options([
                         '06:00:00' => '06:00',
@@ -58,19 +62,6 @@ class BookingResource extends Resource
                         '22:00:00' => '22:00',
                         '23:00:00' => '23:00',
                     ]),
-                Forms\Components\TextInput::make('duration')
-                    ->numeric()
-                    ->hidden(),
-                Forms\Components\Select::make('approval_status')
-                    ->options([
-                        'checked_in' => 'Checked In',
-                        'pending' => 'Pending',
-                        'cancelled' => 'Cancelled',
-                    ])
-                    ->default('pending'),
-                Forms\Components\TextInput::make('payment_id')
-                    ->numeric()
-                    ->hidden(),
                 Forms\Components\Textarea::make('notes')
                     ->columnSpanFull(),
             ]);
@@ -86,52 +77,29 @@ class BookingResource extends Resource
             ->label('Tanggal')
             ->date('d-m-Y')
             ->sortable(),
-            Tables\Columns\TextColumn::make('requester_id')
-            ->label('Nama Pemesan')
-            ->sortable()
-            ->getStateUsing(function ($record) {
-                return \App\Models\User::find($record->requester_id)->name ?? 'N/A'; // Get the name of the requester
-            }),
+            // Tables\Columns\TextColumn::make('requester_id')
+            // ->label('Nama Pemesan')
+            // ->sortable()
+            // ->getStateUsing(function ($record) {
+            //     return \App\Models\User::find($record->requester_id)->name ?? 'N/A'; // Get the name of the requester
+            // }),
             Tables\Columns\TextColumn::make('court_id')
             ->label('Court')
             ->sortable()
             ->getStateUsing(function ($record) {
                 return \App\Models\Court::find($record->court_id)->name ?? 'N/A'; // Get the name of the court
             }),
-            Tables\Columns\TextColumn::make('no_pemesanan')
-                ->searchable(),
-            Tables\Columns\TextColumn::make('start_time')
-            ->time('H:i'),
-            Tables\Columns\TextColumn::make('end_time')
-            ->time('H:i'),
+            Tables\Columns\TextColumn::make('transaction.no_pemesanan')
+            ->label('Order ID')
+            ->sortable()
+            ->searchable(),
             Tables\Columns\TextColumn::make('duration')
             ->label('Durasi')
             ->formatStateUsing(fn ($state) => $state . ' Jam'),
             Tables\Columns\TextColumn::make('time_slots')
             ->label('Slot Waktu')
             ->formatStateUsing(fn ($state) => is_array($state) ? implode(', ', $state) : $state)
-            ,
-            Tables\Columns\TextColumn::make('payment_id')
-            ->label('Payment ID')
             ->sortable(),
-            SelectColumn::make('approval_status')
-            ->label('Status')
-            ->placeholder('Pilih Status:')
-            ->options([
-                'pending' => 'Pending',
-                'checked_in' => 'Check In',
-                'cancelled' => 'Cancelled',
-            ])
-            ->sortable()
-            ->default('pending'),
-
-            Tables\Columns\BadgeColumn::make('payment.payment_status')
-            ->label('Payment Status')
-            ->colors([
-                'success' => 'paid',
-                'warning' => 'waiting',
-                'danger' => 'failed'
-            ]),
             Tables\Columns\TextColumn::make('created_at')
                 ->dateTime()
                 ->sortable()

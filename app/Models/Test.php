@@ -4,19 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class News extends Model
+class Test extends Model
 {
-    protected $primaryKey = 'id_news';
+    use HasFactory;
+
+    protected $primaryKey = 'id_test';
 
     protected $fillable = [
-        'judul',
-        'sub_judul',
-        'tempat',
-        'tanggal',
         'image',
-        'deskripsi',
-        'kategori',
+        'name',
     ];
 
     protected function image(): Attribute
@@ -25,5 +23,4 @@ class News extends Model
             get: fn ($image) => url('/storage/' . $image),
         );
     }
-
 }
