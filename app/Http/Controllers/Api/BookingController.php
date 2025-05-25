@@ -34,18 +34,17 @@ class BookingController extends Controller
 
         return new BookingApiResource(true, 'Detail Data Booking', $booking);
     }
-    
+
     public function store(Request $request)
     {
         $request->validate([
-            'requester_id' => 'required|integer|exists:users,id',
             'court_id' => 'required|integer|exists:courts,id_court',
             'booking_date' => 'required|date',
             'time_slots' => 'required|array',
             'time_slots.*' => 'date_format:H:i:s',
+            'transaction_id' => 'required|exists:transactions,id_transaction',
             'notes' => 'nullable|string',
         ]);
-
 
         // Ambil semua booking untuk court & tanggal yang sama
         $existingBookings = Booking::where('court_id', $request->court_id)
@@ -68,10 +67,10 @@ class BookingController extends Controller
 
         // Tidak ada konflik, lanjut simpan
         $booking = Booking::create([
-            'requester_id' => $request->requester_id,
             'court_id' => $request->court_id,
             'booking_date' => $request->booking_date,
             'time_slots' => $request->time_slots,
+            'transaction_id' => $request->transaction_id,
             'notes' => $request->notes,
         ]);
 
@@ -80,38 +79,5 @@ class BookingController extends Controller
             'message' => 'Booking berhasil dibuat',
             'data' => $booking,
         ]);
-    }
-
-
-
-    public function update(Request $request, $id)
-    {
-        $validator = Validator::make($request->all(), [
-            'requester_id' => 'required|integer|exists:users,id',
-            'court_id' => 'required|integer|exists:courts,id_court',
-            'booking_date' => 'required|date',
-            'time_slots' => 'required|array|min:1',
-            'time_slots.*' => 'required|string|regex:/^\d{2}:\d{2}(:\d{2})?$/', // format HH:mm or HH:mm:ss
-            'notes' => 'nullable|string',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
-
-        $booking = Booking::find($id);
-        if (!$booking) {
-            return response()->json(['message' => 'Booking not found'], 404);
-        }
-
-        $booking->update([
-            'requester_id' => $request->requester_id,
-            'court_id' => $request->court_id,
-            'booking_date' => $request->booking_date,
-            'time_slots' => $request->time_slots,
-            'notes' => $request->notes,
-        ]);
-
-        return new BookingApiResource(true, 'Data Booking Berhasil Diubah!', $booking);
     }
 }

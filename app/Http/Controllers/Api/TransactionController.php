@@ -69,4 +69,18 @@ class TransactionController extends Controller
         return new TransactionApiResource(true, 'Transaction created successfully', $transaction);
     }
 
+    public function destroy($id)
+    {
+        $transaction = Transaction::where('id_transaction', $id)->first();
+
+        if (!$transaction) {
+            return response()->json(['message' => 'Transaction not found'], 404);
+        }
+
+        $transaction->delete();
+
+        return response()->json(['message' => 'Transaction deleted successfully']);
+    }
+
+
 }
