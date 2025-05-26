@@ -2,19 +2,20 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\BookingResource\Pages;
-use App\Filament\Resources\BookingResource\RelationManagers;
-use App\Models\Booking;
 use Filament\Forms;
-use Filament\Forms\Components\Hidden;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Booking;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Filament\Tables\Columns\ToggleColumn;
+use Illuminate\Support\Carbon;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Hidden;
 use Filament\Tables\Columns\SelectColumn;
+use Filament\Tables\Columns\ToggleColumn;
+use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\BookingResource\Pages;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\BookingResource\RelationManagers;
 
 class BookingResource extends Resource
 {
@@ -26,6 +27,13 @@ class BookingResource extends Resource
     protected static ?string $pluralLabel = 'Booking';
     protected static ?int $navigationSort = 2;
     protected static ?string $navigationGroup = 'Administrasi';
+
+
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) Booking::whereDate('booking_date', Carbon::today())
+            ->count();
+    }
 
     public static function form(Form $form): Form
     {
