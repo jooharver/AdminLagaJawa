@@ -28,6 +28,12 @@ class TransactionResource extends Resource
     protected static ?int $navigationSort = 1;
     protected static ?string $navigationGroup = 'Administrasi';
 
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) Transaction::whereDate('created_at', Carbon::today())
+            ->count();
+    }
+
     public static function form(Form $form): Form
     {
         return $form

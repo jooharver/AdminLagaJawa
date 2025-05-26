@@ -2,9 +2,10 @@
 
 namespace App\Filament\Resources\TransactionResource\Pages;
 
-use App\Filament\Resources\TransactionResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
+use App\Filament\Resources\TransactionResource;
+use App\Filament\Resources\TransactionResource\Widgets\TransactionStats;
 
 class ListTransactions extends ListRecords
 {
@@ -14,6 +15,13 @@ class ListTransactions extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
+        ];
+    }
+
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            TransactionStats::class,
         ];
     }
 }
