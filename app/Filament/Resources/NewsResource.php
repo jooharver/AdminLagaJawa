@@ -55,9 +55,10 @@ class NewsResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('id_news')
+                    ->label('ID')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('judul')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('sub_judul')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('tempat')
                     ->searchable(),
@@ -81,6 +82,7 @@ class NewsResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
                 Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
