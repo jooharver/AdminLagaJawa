@@ -18,7 +18,8 @@ class DatabaseSeeder extends Seeder
             KomunitasSeeder::class,
             CourtSeeder::class,
             NewsSeeder::class,
-
+            TransactionSeeder::class,
+            BookingSeeder::class,
         ]);
 
     }

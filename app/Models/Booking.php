@@ -38,6 +38,11 @@ class Booking extends Model
         parent::boot();
 
         static::saving(function ($booking) {
+            // Jika time_slots berupa string, decode dulu ke array
+            if (is_string($booking->time_slots)) {
+                $booking->time_slots = json_decode($booking->time_slots, true) ?: [];
+            }
+
             // Cek bentrok booking (exclude diri sendiri saat update)
             $existingBookings = Booking::where('booking_date', $booking->booking_date)
                 ->where('court_id', $booking->court_id)

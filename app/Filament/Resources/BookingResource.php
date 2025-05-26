@@ -78,6 +78,10 @@ class BookingResource extends Resource
         ->columns([
             Tables\Columns\TextColumn::make('id_booking')
             ->label('ID'),
+            Tables\Columns\TextColumn::make('transaction.user.name')
+            ->label('Nama Pemesan')
+            ->sortable()
+            ->searchable(),
             Tables\Columns\TextColumn::make('booking_date')
             ->label('Tanggal')
             ->date('d-m-Y')

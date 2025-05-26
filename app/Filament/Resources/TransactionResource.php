@@ -45,7 +45,7 @@ class TransactionResource extends Resource
                 ->maxLength(255)
                 ->unique(table: 'transactions', column: 'no_pemesanan'),
                 Forms\Components\Select::make('payment_method')
-                
+
                     ->options([
                         'transfer' => 'Transfrer',
                         'qris' => 'QRIS',
@@ -82,6 +82,7 @@ class TransactionResource extends Resource
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('user.name')
+                    ->label('Nama Pemesan')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
