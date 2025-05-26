@@ -24,21 +24,21 @@ class Komunitas extends Model
         'jadwal' => 'array',
     ];
 
-// Tetap menyimpan path asli
-public function getImageLogoUrlAttribute(): ?string
-{
-    return $this->image_logo ? url('/storage/' . $this->image_logo) : null;
-}
+    // Tetap menyimpan path asli
+    public function getImageLogoUrlAttribute(): ?string
+    {
+        return $this->image_logo ? url('/storage/' . $this->image_logo) : null;
+    }
 
-public function getImageBannerUrlAttribute(): ?string
-{
-    return $this->image_banner ? url('/storage/' . $this->image_banner) : null;
-}
+    public function getImageBannerUrlAttribute(): ?string
+    {
+        return $this->image_banner ? url('/storage/' . $this->image_banner) : null;
+    }
 
-public function getImageUrlAttribute(): ?string
-{
-    return $this->image ? url('/storage/' . $this->image) : null;
-}
+    public function getImageUrlAttribute(): ?string
+    {
+        return $this->image ? url('/storage/' . $this->image) : null;
+    }
 
 
     protected static function boot()

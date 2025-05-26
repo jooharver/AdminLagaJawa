@@ -19,11 +19,9 @@ class News extends Model
         'kategori',
     ];
 
-    protected function image(): Attribute
+    public function getImageUrlAttribute(): ?string
     {
-        return Attribute::make(
-            get: fn ($image) => url('/storage/' . $image),
-        );
+        return $this->image ? url('/storage/' . $this->image) : null;
     }
 
 }

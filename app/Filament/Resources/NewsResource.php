@@ -42,8 +42,9 @@ class NewsResource extends Resource
                 Forms\Components\DatePicker::make('tanggal')
                     ->required(),
                 Forms\Components\FileUpload::make('image')
+                    ->maxSize(2048)
                     ->directory('news')
-                    ->required(),
+                    ->columnSpanFull(),
                 Forms\Components\Textarea::make('deskripsi')
                     ->required()
                     ->columnSpanFull(),
@@ -63,11 +64,9 @@ class NewsResource extends Resource
                 Tables\Columns\TextColumn::make('tanggal')
                     ->date()
                     ->sortable(),
-                ImageColumn::make('image')
+                Tables\Columns\ImageColumn::make('image_url')
                     ->label('Image')
-                    ->getStateUsing(fn ($record) => url('/storage/news/' . $record->image))
-                    ->height(60)
-                    ->width(60),
+                    ->size(100),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -82,6 +81,7 @@ class NewsResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
