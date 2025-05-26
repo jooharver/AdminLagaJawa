@@ -44,7 +44,7 @@ class TestResource extends Resource
                     ->label('Image')
                     ->url(fn (Test $record): string => $record->image)
                     ->rounded()
-                    ->size(50),
+                    ->size(100),
                 Tables\Columns\TextColumn::make('name')
                     ->label('Name')
                     ->sortable()

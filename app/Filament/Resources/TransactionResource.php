@@ -45,6 +45,7 @@ class TransactionResource extends Resource
                 ->maxLength(255)
                 ->unique(table: 'transactions', column: 'no_pemesanan'),
                 Forms\Components\Select::make('payment_method')
+                
                     ->options([
                         'transfer' => 'Transfrer',
                         'qris' => 'QRIS',
@@ -83,6 +84,11 @@ class TransactionResource extends Resource
                 Tables\Columns\TextColumn::make('user.name')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Tanggal Transaksi')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('no_pemesanan')
                     ->label('Order ID')
                     ->searchable(),
@@ -110,10 +116,6 @@ class TransactionResource extends Resource
                     ])
                     ->sortable()
                     ->default('pending'),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()

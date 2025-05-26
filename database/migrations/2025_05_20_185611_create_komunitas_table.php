@@ -12,14 +12,12 @@ return new class extends Migration
         Schema::create('komunitas', function (Blueprint $table) {
             $table->id('id');
             $table->string('title');
+            $table->foreignId('user_id')->constrained('users', 'id')->onDelete('cascade');
             $table->string('image')->nullable();
             $table->string('image_logo')->nullable();
             $table->string('image_banner')->nullable();
             $table->string('phone');
             $table->string('deskripsi');
-            $table->date('tanggal')->nullable();
-            $table->json('jadwal')->nullable();
-            $table->string('court')->nullable();
             $table->timestamps();
         });
     }

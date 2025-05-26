@@ -16,7 +16,7 @@ class CourtSeeder extends Seeder
         Court::create([
             'name' => 'Court 1',
             'type' => 'Standar',
-            'price_per_hour' => '50000',
+            'price_per_hour' => '75000',
         ]);
 
         Court::create([
@@ -36,7 +36,7 @@ class CourtSeeder extends Seeder
         Court::create([
             'name' => 'Court 4',
             'type' => 'Standar',
-            'price_per_hour' => '50000',
+            'price_per_hour' => '75000',
         ]);
 
 

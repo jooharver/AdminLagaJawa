@@ -14,28 +14,34 @@ class KomunitasSeeder extends Seeder
     public function run(): void
     {
         Komunitas::create([
-            'title' => 'Laga Jawa Tim A',
-            'deskripsi' => 'Komunitas ini adalah komunitas yang dibentuk untuk menampung para pemain yang ingin bermain di tim Jawa Tim A',
+            'title' => 'LJ Mawar',
+            'user_id' => 8,
+            'deskripsi' => 'Komunitas ini adalah komunitas yang dibentuk untuk menampung para pemain yang ingin bermain di tim Jawa Tim Mawar',
             'phone' => '081234567890',
-            'tanggal' => '2025-05-20',
-            'jadwal' => json_encode([
-                '08:00',
-                '09:00',
-                '10:00',
-            ]),
-            'court' => 'Court 1',
+            'image' => 'komunitas/image_1.png',
+            'image_logo' => 'komunitas/logo_1.png',
+            'image_banner' => 'komunitas/banner_1.png',
+
         ]);
 
         Komunitas::create([
-            'title' => 'Laga Jawa Tim B',
-            'deskripsi' => 'Komunitas ini adalah komunitas yang dibentuk untuk menampung para pemain yang ingin bermain di tim Jawa Tim B',
+            'title' => 'LJ Serigala',
+            'user_id' => 9,
+            'deskripsi' => 'Komunitas ini adalah komunitas yang dibentuk untuk menampung para pemain yang ingin bermain di tim Jawa Tim Serigala',
             'phone' => '081234567890',
-            'tanggal' => '2025-05-24',
-            'jadwal' => json_encode([
-                '15:00',
-                '16:00',
-            ]),
-            'court' => 'Court 2',
+            'image' => 'komunitas/image_2.png',
+            'image_logo' => 'komunitas/logo_2.png',
+            'image_banner' => 'komunitas/banner_2.png',
+        ]);
+
+        Komunitas::create([
+            'title' => 'Sudimoro FC',
+            'user_id' => 10,
+            'deskripsi' => 'Komunitas ini adalah komunitas yang dibentuk untuk menampung para pemain yang ingin bermain di tim Jawa Tim Sudimoro',
+            'phone' => '081234567890',
+            'image' => 'komunitas/image_3.png',
+            'image_logo' => 'komunitas/logo_3.png',
+            'image_banner' => 'komunitas/banner_3.png',
         ]);
     }
 }

@@ -82,12 +82,6 @@ class BookingResource extends Resource
             ->label('Tanggal')
             ->date('d-m-Y')
             ->sortable(),
-            // Tables\Columns\TextColumn::make('requester_id')
-            // ->label('Nama Pemesan')
-            // ->sortable()
-            // ->getStateUsing(function ($record) {
-            //     return \App\Models\User::find($record->requester_id)->name ?? 'N/A'; // Get the name of the requester
-            // }),
             Tables\Columns\TextColumn::make('court_id')
             ->label('Court')
             ->sortable()
@@ -121,13 +115,13 @@ class BookingResource extends Resource
                 Tables\Actions\Action::make('Export Excel')
                 ->label('Export Excel')
                 ->url(route('export-booking'))
-                ->icon('heroicon-o-arrow-up-tray')
+                ->icon('heroicon-o-arrow-down-tray')
                 ->openUrlInNewTab(),
 
                 Tables\Actions\Action::make('Export PDF')
                     ->label('Export PDF')
                     ->url(route('export-bookinglog')) // Perbaiki nama route di sini
-                    ->icon('heroicon-o-arrow-up-tray')
+                    ->icon('heroicon-o-document-arrow-down')
                     ->openUrlInNewTab(),
             ])
             ->actions([

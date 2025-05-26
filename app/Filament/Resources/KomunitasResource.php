@@ -30,70 +30,35 @@ class KomunitasResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\Select::make('user_id')
+                    ->relationship('user', 'name')
+                    ->label('Pengelola Komunitas')
+                    ->searchable()
+                    ->preload()
+                    ->required(),
                 Forms\Components\TextInput::make('title')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('phone')
                     ->required()
                     ->maxLength(20),
-                Forms\Components\DatePicker::make('tanggal')
-                    ->nullable(),
-                Forms\Components\Select::make('jadwal')
-                ->nullable()
-                ->multiple()
-                ->options([
-                    '06:00:00' => '06:00',
-                    '07:00:00' => '07:00',
-                    '08:00:00' => '08:00',
-                    '09:00:00' => '09:00',
-                    '10:00:00' => '10:00',
-                    '11:00:00' => '11:00',
-                    '12:00:00' => '12:00',
-                    '13:00:00' => '13:00',
-                    '14:00:00' => '14:00',
-                    '15:00:00' => '15:00',
-                    '16:00:00' => '16:00',
-                    '17:00:00' => '17:00',
-                    '18:00:00' => '18:00',
-                    '19:00:00' => '19:00',
-                    '20:00:00' => '20:00',
-                    '21:00:00' => '21:00',
-                    '22:00:00' => '22:00',
-                    '23:00:00' => '23:00',
-                ]),
-                Forms\Components\Select::make('court')
-
-                    ->options([
-                        'Court 1' => 'Court 1',
-                        'Court 2' => 'Court 2',
-                        'Court 3' => 'Court 3',
-                        'Court 4' => 'Court 4',
-                        'Court 5' => 'Court 5',
-                    ])
-                    ->required(),
                 Forms\Components\Textarea::make('deskripsi')
                     ->required()
                     ->columnSpanFull(),
-                Forms\Components\FileUpload::make('image')
+                    Forms\Components\FileUpload::make('image_logo')
+                    ->maxSize(2048)
                     ->directory('komunitas')
-                    ->required(),
-                Forms\Components\FileUpload::make('image_logo')
-                    ->image()
-                    ->maxSize(1024) // maks 1MB
-                    ->getUploadedFileNameForStorageUsing(function ($file) {
-                        return md5($file->getClientOriginalName() . microtime()) . '.' . $file->getClientOriginalExtension();
-                    })
-
-                    ,
-                Forms\Components\FileUpload::make('image_banner')
-                    ->image()
-                    ->maxSize(1024) // maks 1MB
-                    ->getUploadedFileNameForStorageUsing(function ($file) {
-                        return md5($file->getClientOriginalName() . microtime()) . '.' . $file->getClientOriginalExtension();
-                    })
-
-
                     ->columnSpanFull(),
+                Forms\Components\FileUpload::make('image_banner')
+                    ->maxSize(2048)
+                    ->directory('komunitas')
+                    ->columnSpanFull(),
+
+                Forms\Components\FileUpload::make('image')
+                    ->maxSize(2048)
+                    ->directory('komunitas')
+                    ->columnSpanFull(),
+
             ]);
     }
 
@@ -111,16 +76,16 @@ class KomunitasResource extends Resource
                     ->label('No. Telepon')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('tanggal')
-                    ->label('Tanggal')
-                    ->date('d-m-Y')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('jadwal')
-                    ->label('Waktu')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('court')
-                    ->label('Court')
-                    ->sortable(),
+                    Tables\Columns\ImageColumn::make('image_logo_url')
+                    ->label('Logo')
+                    ->rounded()
+                    ->size(80),
+                Tables\Columns\ImageColumn::make('image_banner_url')
+                    ->label('Banner')
+                    ->size(80),
+                Tables\Columns\ImageColumn::make('image_url')
+                    ->label('Image')
+                    ->size(80),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Dibuat Pada')
                     ->dateTime()
