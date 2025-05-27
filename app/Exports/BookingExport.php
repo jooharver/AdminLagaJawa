@@ -9,71 +9,52 @@ use Carbon\Carbon;
 
 class BookingExport implements FromCollection, WithHeadings
 {
-    /**
-     * Ambil data yang akan diekspor ke Excel.
-     *
-     * @return \Illuminate\Support\Collection
-     */
     public function collection()
     {
-        return Booking::with(['requester', 'court', 'payment'])->get()->map(function ($booking, $key) {
-            return [
-                'No' => $key + 1,
-                'Booking ID' => $booking->id_booking,
-                'Nama Pemesan' => $booking->requester->name ?? '-',
-                'Tanggal Booking' => $this->formatDate($booking->booking_date),
-                'Jam Mulai' => $this->formatTime($booking->start_time),
-                'Jam Selesai' => $this->formatTime($booking->end_time),
-                'Durasi' => $booking->duration ?? '-',
-                'Lapangan' => $booking->court->name ?? '-',
-                'Status Approval' => ucfirst($booking->approval_status),
-                'Metode Pembayaran' => $booking->payment->payment_method ?? '-',
-                'Status Pembayaran' => ucfirst($booking->payment->payment_status ?? '-'),
-            ];
-        });
+        $now = Carbon::now();
+
+        return Booking::with(['transaction', 'court', ])
+            ->whereMonth('booking_date', $now->month)
+            ->whereYear('booking_date', $now->year)
+            ->get()
+            ->map(function ($booking, $key) {
+    return [
+        'No' => $key + 1,
+        'Booking ID' => $booking->id_booking,
+        'Nama Pemesan' => $booking->transaction->user->name ?? '-',
+        'Tanggal' => $this->formatDate($booking->booking_date),
+        'Court' => optional($booking->court)->name ?? '-',
+        'Durasi' => $booking->duration ? $booking->duration . ' Jam' : '-',
+        'Slot Waktu' => implode(', ', $booking->time_slots ?? []),
+        'Order ID' => optional($booking->transaction)->no_pemesanan ?? '-',
+        'Total Amount' => 'Rp' . number_format(optional($booking->transaction)->total_amount ?? 0, 0, ',', '.'),
+    ];
+});
+
     }
 
-    /**
-     * Format tanggal menjadi 'd-m-Y'.
-     *
-     * @param  string|Carbon|null  $date
-     * @return string
-     */
     private function formatDate($date)
     {
         return $date ? Carbon::parse($date)->format('d-m-Y') : '-';
     }
 
-    /**
-     * Format waktu menjadi 'H:i'.
-     *
-     * @param  string|Carbon|null  $time
-     * @return string
-     */
     private function formatTime($time)
     {
         return $time ? Carbon::parse($time)->format('H:i') : '-';
     }
 
-    /**
-     * Judul kolom di Excel.
-     *
-     * @return array
-     */
     public function headings(): array
     {
         return [
             'No',
             'Booking ID',
             'Nama Pemesan',
-            'Tanggal Booking',
-            'Jam Mulai',
-            'Jam Selesai',
+            'Tanggal',
+            'Court',
             'Durasi',
-            'Lapangan',
-            'Status Approval',
-            'Metode Pembayaran',
-            'Status Pembayaran',
+            'Slot Waktu',
+            'Order ID',
+            'Total Amount',
         ];
     }
 }
