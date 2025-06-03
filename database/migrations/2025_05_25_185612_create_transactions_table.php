@@ -20,6 +20,7 @@ return new class extends Migration
             $table->enum('payment_status', ['waiting', 'paid', 'failed'])->default('waiting');
             $table->timestamp('paid_at')->nullable();
             $table->enum('status', ['pending', 'confirmed', 'cancelled'])->default('pending');
+            $table->string('snap_token')->nullable(); // token untuk Snap API
             $table->timestamps();
         });
     }
