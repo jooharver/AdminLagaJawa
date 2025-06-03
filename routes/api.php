@@ -2,6 +2,11 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\TransactionController;
+use App\Http\Controllers\MidtransWebhookController;
+
+Route::post('/midtrans/webhook', [MidtransWebhookController::class, 'handle']);
+
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -23,3 +28,10 @@ Route::apiResource('/komunitas', App\Http\Controllers\Api\KomunitasController::c
 Route::apiResource('/test', App\Http\Controllers\Api\TestController::class);
 //court
 Route::apiResource('/courts', App\Http\Controllers\Api\CourtController::class);
+//midtrans
+Route::apiResource('/midtrans', App\Http\Controllers\Api\MidtransController::class);
+
+// routes/api.php
+Route::get('transactions/by-order/{orderId}', [TransactionController::class, 'getByOrderId']);
+Route::get('/transactions/{id}/generate-snap', [TransactionController::class, 'generateSnapToken']);
+

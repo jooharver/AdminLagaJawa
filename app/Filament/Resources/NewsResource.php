@@ -48,6 +48,11 @@ class NewsResource extends Resource
                 Forms\Components\Textarea::make('deskripsi')
                     ->required()
                     ->columnSpanFull(),
+                Forms\Components\Select::make('kategori')
+                    ->options([
+                    'event' => 'Event',
+                    'announcement' => 'Announcement'
+                    ]),
             ]);
     }
 
