@@ -15,12 +15,10 @@ return new class extends Migration
             $table->id('id_booking');
             $table->foreignId('transaction_id')->constrained('transactions', 'id_transaction')->onDelete('cascade');
             $table->foreignId('court_id')->constrained('courts', 'id_court')->onDelete('cascade');
-            $table->string('no_pemesanan')->unique();
             $table->date('booking_date');
             $table->json('time_slots');
             $table->integer('duration')->nullable();
             $table->bigInteger('amount');
-            $table->bigInteger('total_amount')->default(0);
             $table->text('notes')->nullable();
 
             $table->timestamps();
