@@ -130,19 +130,22 @@ public function store(Request $request)
 
 
     public function getByOrderId($orderId)
-    {
-        $transaction = Transaction::where('no_pemesanan', $orderId)->first();
+{
+    $transaction = Transaction::with(['user', 'bookings.court']) // ← penting
+        ->where('no_pemesanan', $orderId)
+        ->first();
 
-        if (!$transaction) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Transaction not found',
-                'data' => null,
-            ], 404);
-        }
-
-        return new TransactionApiResource(true, 'Transaction found', $transaction);
+    if (!$transaction) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Transaction not found',
+            'data' => null,
+        ], 404);
     }
+
+    return new TransactionApiResource(true, 'Transaction found', $transaction);
+}
+
 
 
     public function destroy($id)
