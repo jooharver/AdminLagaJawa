@@ -139,6 +139,19 @@ class TransactionResource extends Resource
                 ->label('Transaksi Seminggu Terakhir')
                 ->query(fn ($query) => $query->whereBetween('created_at', [Carbon::now()->subWeek(), Carbon::now()])),
             ])
+            ->headerActions([
+                Tables\Actions\Action::make('Export Excel')
+                ->label('Export Excel')
+                ->url(route('export-booking'))
+                ->icon('heroicon-o-arrow-down-tray')
+                ->openUrlInNewTab(),
+
+                Tables\Actions\Action::make('Export PDF')
+                    ->label('Export PDF')
+                    ->url(route('export-bookinglog')) 
+                    ->icon('heroicon-o-document-arrow-down')
+                    ->openUrlInNewTab(),
+            ])
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),

@@ -100,7 +100,7 @@ tbody tr:nth-child(even) {
     <hr class="separator" />
 
     <h4 style="text-align: center; margin-bottom: 20px;">
-    LAPORAN PEMESANAN LAGA JAWA FUTSAL <br>
+    LAPORAN PENDAPATAN LAGA JAWA FUTSAL <br>
     BULAN {{ strtoupper($monthYearDisplay) }}
 </h4>
     <p style="text-align:right; font-size:12px; color:#888;">
@@ -133,6 +133,13 @@ tbody tr:nth-child(even) {
     <td>Rp{{ number_format($booking->transaction->total_amount ?? 0, 0, ',', '.') }}</td>
   </tr>
 @endforeach
+
+<tr>
+  <td colspan="7" style="text-align: center; font-weight: bold;">Total Keseluruhan:</td>
+  <td style="text-align: center; font-weight: bold; color: green;">
+    Rp{{ number_format($totalSemua, 0, ',', '.') }}
+  </td>
+</tr>
 
       </tbody>
     </table>
