@@ -75,9 +75,17 @@ class AuthController extends Controller
     /**
      * Logout user
      */
+    // Logout
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
+
         return response()->json(new UserApiResource(true, 'Logout successful', null));
+    }
+
+    // Profile
+    public function profile(Request $request)
+    {
+        return response()->json(new UserApiResource(true, 'User profile fetched successfully', $request->user()));
     }
 }
