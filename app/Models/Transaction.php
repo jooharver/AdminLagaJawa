@@ -34,6 +34,17 @@ class Transaction extends Model
                 $booking->delete();
             });
         });
+        
+        static::updating(function ($transaction) {
+            // Jika payment_status berubah menjadi 'paid' dan sebelumnya bukan 'paid'
+            if (
+                $transaction->isDirty('payment_status') &&
+                $transaction->payment_status === 'paid' &&
+                is_null($transaction->paid_at)
+            ) {
+                $transaction->paid_at = now();
+            }
+        });
     }
 
 

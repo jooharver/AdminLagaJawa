@@ -59,12 +59,10 @@ class MidtransController extends Controller
                 } else if ($fraudStatus === 'accept') {
                     $transaction->payment_status = 'paid';
                     $transaction->status = 'confirmed';
-                    $transaction->paid_at = now();
                 }
             } elseif ($transactionStatus === 'settlement') {
                 $transaction->payment_status = 'paid';
                 $transaction->status = 'confirmed';
-                $transaction->paid_at = now();
             } elseif ($transactionStatus === 'pending') {
                 $transaction->payment_status = 'waiting';
                 $transaction->status = 'pending';

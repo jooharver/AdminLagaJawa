@@ -47,14 +47,12 @@ class TransactionResource extends Resource
                 Forms\Components\TextInput::make('no_pemesanan')
                 ->label('Order ID')
                 ->readOnly()
-                ->default(fn () => 'NTR-' . strtoupper(Str::random(9)))
+                ->default(fn ($context) => $context === 'create' ? 'NTR-' . strtoupper(Str::random(9)) : null)
                 ->maxLength(255)
-                ->unique(table: 'transactions', column: 'no_pemesanan'),
+                ->rule(fn ($record) => \Illuminate\Validation\Rule::unique('transactions', 'no_pemesanan')->ignore($record?->id_transaction, 'id_transaction')),
                 Forms\Components\Select::make('payment_method')
-
                     ->options([
                         'transfer' => 'Transfrer',
-                        'qris' => 'QRIS',
                         'cod' => 'COD (Bayar di Tempat)',
                     ])->default('transfer'),
                 Forms\Components\TextInput::make('total_amount')
@@ -148,7 +146,7 @@ class TransactionResource extends Resource
 
                 Tables\Actions\Action::make('Export PDF')
                     ->label('Export PDF')
-                    ->url(route('export-bookinglog')) 
+                    ->url(route('export-bookinglog'))
                     ->icon('heroicon-o-document-arrow-down')
                     ->openUrlInNewTab(),
             ])
